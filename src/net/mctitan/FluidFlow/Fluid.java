@@ -70,6 +70,8 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
 		sleepTime = plugin.getConfig().getInt("Fluid.sleepTime",sleepTime);
 		plugin.saveConfig();
 		
+                init();
+                
 		//start the fluid's asynchronous thread
 		start();
 
