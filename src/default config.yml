@@ -1,3 +1,0 @@
-BlockChanger.changeCountPerIter: 1000
-BlockChanger.runTime: 10000000
-Fluid.sleepTime: 100000
