@@ -248,8 +248,6 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         // TODO: Allow each fluid flow plugin to be configurable via its own code...
 	/**
 	 * called so that the fluid can initialize itself and load configuration
-	 *
-	 * @param config the configuration file of the fluid
 	 */
-	//public abstract void init(Configuration config);
+	public abstract void init();
 }
