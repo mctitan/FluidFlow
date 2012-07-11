@@ -66,7 +66,6 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
 			return;
 		}
 
-                // TODO: Make this configurable.
 		//grab the sleep timer
 		sleepTime = plugin.getConfig().getInt("Fluid.sleepTime",sleepTime);
 		plugin.saveConfig();
@@ -223,15 +222,6 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
 	}
 
 	/**
-	 * gets the config file from the Fluid
-	 *
-	 * @return the configuration file for the fluid
-	 */
-	/*protected Configuration getConfig() {
-		return config;
-	}/*
-
-	/**
 	 * abstract method to get the material used by the fluid
 	 *
 	 * @return the material type the fluid uses, DO NOT RETURN NULL
@@ -245,7 +235,6 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
 	 */
 	public abstract void flow(FluidBlock block);
 
-        // TODO: Allow each fluid flow plugin to be configurable via its own code...
 	/**
 	 * called so that the fluid can initialize itself and load configuration
 	 */
