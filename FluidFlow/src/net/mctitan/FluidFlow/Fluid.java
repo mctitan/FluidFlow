@@ -88,14 +88,14 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         start();
 
         //tell the operator that the plugin is enabled
-        System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" enabled");
+        //System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" enabled");
     }
 
     /** called when the fluid is disabled */
     @Override
     public void onDisable() {
         //tell the operator that the plugin is disabled
-        System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" disabled");
+        //System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" disabled");
     }
         
     /** edits where the config file is store using magic hackery */
