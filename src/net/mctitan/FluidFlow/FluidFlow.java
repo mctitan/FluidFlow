@@ -54,7 +54,7 @@ public class FluidFlow extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(blockListener, this);
 
 		//tell the operator that the plugin has been enabled fully
-		System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" enabled");
+		//System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" enabled");
 	}
 
 	/** called when the plugin is disabled */
@@ -88,7 +88,7 @@ public class FluidFlow extends JavaPlugin {
 		registeredF.clear();
 
 		//tell the operator that the plugin is shutdown
-		System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" disabled");
+		//System.out.println(getDescription().getName()+" version "+getDescription().getVersion()+" disabled");
 	}
 
 	/**
