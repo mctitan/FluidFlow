@@ -8,5 +8,5 @@ import java.io.Serializable;
  * @author mindless728
  */
 public class BlockData implements Serializable {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 }
