@@ -40,6 +40,9 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
     
     /** the length of time the fluid should delay, implementation specific */
     private long flowDelay = 500000000L;
+    
+    /** threads of fluid execution */
+    private FluidThread[] threads;
 
     /**
      * lets all fluids know about each other's changes, for synchronizing between
@@ -89,6 +92,11 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         
         //initialize the fluid
         init();
+        
+        //setup the fluid threads
+        threads = new FluidThread[(int)numberThreads];
+        for(int i = 0; i < numberThreads; ++i)
+            threads[i] = new FluidThread(this);
                 
         //start the fluid's asynchronous thread
         start();
@@ -269,7 +277,9 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
 
     /** starts the asynchronous thread the fluid uses to run */
     private void start() {
-        (new Thread(this)).start();
+        //(new Thread(this)).start();
+        for(int i = 0; i < numberThreads; ++i)
+            threads[i].start();
     }
 
     /** stops the asynchronous thread the fluid uses to run */
@@ -278,7 +288,9 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         running = false;
 
         //wait for it to stop
-        while(!stopped) sleep(sleepTime);
+        //while(!stopped) sleep(sleepTime);
+        for(int i = 0; i < numberThreads; ++i)
+            while(!threads[i].stopped) sleep(sleepTime);
     }
 
     /**
@@ -299,4 +311,21 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
      * called so that the fluid can initialize itself and load configuration
      */
     public abstract void init();
+    
+    /** wrapper for Fluid Class to allow multiple fluid threads */
+    private class FluidThread extends Thread {
+        public boolean stopped;
+        Fluid fluid;
+        
+        public FluidThread(Fluid fluid) {
+            stopped = false;
+            this.fluid = fluid;
+        }
+        
+        @Override
+        public void run() {
+            fluid.run();
+            stopped = true;
+        }
+    }
 }
