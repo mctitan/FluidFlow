@@ -37,6 +37,9 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
     
     /** the number of threads teh fluid should use to calculate flows */
     private long numberThreads = 1;
+    
+    /** the length of time the fluid should delay, implementation specific */
+    private long flowDelay = 500000000L;
 
     /**
      * lets all fluids know about each other's changes, for synchronizing between
@@ -78,10 +81,13 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         //setup the default config
         setConfigFile(); //hacks!!!
         getConfig().addDefault("Fluid.numberThreads", numberThreads);
+        getConfig().addDefault("Fluid.flowDelay", flowDelay);
         getConfig().options().copyDefaults(true);
         numberThreads = getConfig().getLong("Fluid.numberThreads");
+        flowDelay = getConfig().getLong("Fluid.flowDelay");
         saveConfig();
         
+        //initialize the fluid
         init();
                 
         //start the fluid's asynchronous thread
@@ -124,6 +130,10 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
      * @param flow the flow to add
      */
     public void addFlow(FluidBlock flow) {
+        long time = flowDelay+System.nanoTime();
+        if(flow.data == null)
+            flow.data = new BlockData();
+        flow.data.flowDelay = time;
         flowChange(flow);
     }
 
@@ -156,6 +166,11 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         }
         return ret;
     }
+    
+    /** gets the flow delay */
+    public long getFlowDelay() {
+        return flowDelay;
+    }
 
     /** the separate thread that runs the fluid */
     public void run() {
@@ -176,6 +191,10 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
                 sleep(sleepTime);
                 continue;
             }
+            
+            //wait until the flow is ready to go
+            while(temp.data != null && temp.data.flowDelay > System.nanoTime())
+                try{Thread.sleep(0, 1000);}catch(Exception e) {} //sleeps 1 micro-second
 
             //safegaurd the running thread by catching all exceptions and errors
             try {

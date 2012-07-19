@@ -9,4 +9,13 @@ import java.io.Serializable;
  */
 public class BlockData implements Serializable {
     private static final long serialVersionUID = 1;
+    public long flowDelay;
+    
+    public BlockData() {
+        this(0);
+    }
+    
+    public BlockData(long delta) {
+        flowDelay = System.nanoTime()+delta;
+    }
 }
