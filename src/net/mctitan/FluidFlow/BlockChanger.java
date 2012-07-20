@@ -31,9 +31,9 @@ public class BlockChanger implements Runnable {
         blockChanges = bc;
         plugin = p;
                 
-                runTime = plugin.getConfig().getInt("BlockChanger.runTime");
-                changeCountPerIter = plugin.getConfig().getInt("BlockChanger.changeCountPerIter");
-                plugin.saveConfig();
+        runTime = plugin.getConfig().getInt("BlockChanger.runTime");
+        changeCountPerIter = plugin.getConfig().getInt("BlockChanger.changeCountPerIter");
+        plugin.saveConfig();
     }
 
     /**
@@ -43,9 +43,13 @@ public class BlockChanger implements Runnable {
         long start = System.nanoTime();
         ChangedBlocks temp;
         FluidBlock block;
+        long changes;
 
         //loop while there is time left in this server tick
         while((System.nanoTime() - start) < runTime) {
+            //reset the changes variable
+            changes = 0;
+            
             //loop through the fluids constantly
             for(Fluid f : blockChanges.keySet()) {
                 //get the changed blocks from the fluid and lock it
@@ -57,11 +61,18 @@ public class BlockChanger implements Runnable {
                             //remove the changed block from the queue and set the type on the servers end
                             block = temp.remove();
                             block.loc.getBlock().setType(block.newType);
+                            
+                            //increment the change counter
+                            ++changes;
                         } else //if there are no changes, go to next fluid
                             break;
                     }
                 }
             }
+            
+            //if there were no changes, break out
+            if(changes == 0)
+                break;
         }
     }
 }
