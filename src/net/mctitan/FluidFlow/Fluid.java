@@ -1,6 +1,7 @@
 package net.mctitan.FluidFlow;
 
 import org.bukkit.Material;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -225,8 +226,18 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
      * @param type the new type you want it changed to
      */
     public void setType(FluidBlock fb, Material type) {
+        setMaterialData(fb, new MaterialData(type, (byte)0));
+    }
+    
+    /**
+     * sets the material data for the fluid block
+     * 
+     * @param fb fluid block to change
+     * @param mdata the material data to change it to
+     */
+    public void setMaterialData(FluidBlock fb, MaterialData mdata) {
         //set newType in the fluid block
-        fb.newType = type;
+        fb.newType = mdata;
 
         //lock the changed blocks
         synchronized(changedBlocks) {
@@ -234,16 +245,25 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
             changedBlocks.add(fb);
         }
     }
-
+    
     /**
      * gets the material type of a fluid block
+     * @param fb the fluid block to get data for
+     * @return the material type is is made of
+     */
+    public Material getType(FluidBlock fb) {
+        return getMaterialData(fb).getItemType();
+    }
+    
+    /**
+     * gets the material data of a fluid block
      *
      * @param fb the fluid block to get the type from
      *
-     * @return the type the fluid block points to
+     * @return the material data the fluid block points to
      */
-    public Material getType(FluidBlock fb) {
-        Material ret = null;
+    public MaterialData getMaterialData(FluidBlock fb) {
+        MaterialData ret = null;
         ChangedBlocks temp = null;
 
         //loop through all of the materials to get a type, first one
@@ -258,8 +278,10 @@ public abstract class Fluid extends JavaPlugin implements Runnable {
         }
 
         //if there was no type from the changed blocks, grab the server type
-        if(ret == null)
-            ret = fb.loc.getBlock().getType();
+        if(ret == null) {
+            org.bukkit.block.Block btemp = fb.loc.getBlock();
+            ret = new MaterialData(btemp.getType(), btemp.getData());
+        }
 
         //return the type
         return ret;

@@ -79,7 +79,9 @@ public class FluidFlow extends JavaPlugin {
             //while the fluid has changed blocks, change them
             while(!temp.isEmpty()) {
                 block = temp.remove();
-                block.loc.getBlock().setType(block.newType);
+                org.bukkit.block.Block btemp = block.loc.getBlock();
+                btemp.setType(block.newType.getItemType());
+                btemp.setData(block.newType.getData());
             }
         }
 

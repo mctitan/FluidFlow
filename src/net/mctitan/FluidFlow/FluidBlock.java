@@ -3,7 +3,7 @@ package net.mctitan.FluidFlow;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.material.MaterialData;
 
 import java.util.LinkedList;
 
@@ -20,7 +20,7 @@ public class FluidBlock {
     public BlockData data;
 
     /** the new material type when changing the block */
-    public Material newType;
+    public MaterialData newType;
 
     /** the hash code of the block, calculated when the block is created */
     private Integer hash;

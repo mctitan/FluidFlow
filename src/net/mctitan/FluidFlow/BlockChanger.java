@@ -2,6 +2,7 @@ package net.mctitan.FluidFlow;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.bukkit.block.Block;
 
 /**
  * Changes the blocks from the asynchronous threads that the fluids flow int
@@ -44,6 +45,7 @@ public class BlockChanger implements Runnable {
         ChangedBlocks temp;
         FluidBlock block;
         long changes;
+        Block btemp;
 
         //loop while there is time left in this server tick
         while((System.nanoTime() - start) < runTime) {
@@ -60,7 +62,9 @@ public class BlockChanger implements Runnable {
                         if(!temp.isEmpty()) {
                             //remove the changed block from the queue and set the type on the servers end
                             block = temp.remove();
-                            block.loc.getBlock().setType(block.newType);
+                            btemp = block.loc.getBlock();
+                            btemp.setType(block.newType.getItemType());
+                            btemp.setData(block.newType.getData());
                             
                             //increment the change counter
                             ++changes;

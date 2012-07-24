@@ -1,6 +1,6 @@
 package net.mctitan.FluidFlow;
 
-import org.bukkit.Material;
+import org.bukkit.material.MaterialData;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,12 +16,12 @@ public class ChangedBlocks {
     private LinkedList<FluidBlock> list;
 
     /** the mappping from the blocks to the new material type */
-    private HashMap<FluidBlock, Material> map;
+    private HashMap<FluidBlock, MaterialData> map;
 
     /** default constructor */
     public ChangedBlocks() {
-        list = new LinkedList<FluidBlock>();
-        map = new HashMap<FluidBlock, Material>();
+        list = new LinkedList<>();
+        map = new HashMap<>();
     }
 
     /**
@@ -71,7 +71,7 @@ public class ChangedBlocks {
      *
      * @return the mapped material if it exists or null if not
      */
-    public Material getType(FluidBlock fb) {
+    public MaterialData getType(FluidBlock fb) {
         if(fb == null)
             return null;
         return map.get(fb);
